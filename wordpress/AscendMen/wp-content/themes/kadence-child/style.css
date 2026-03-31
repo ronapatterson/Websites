@@ -1,0 +1,17 @@
+/*
+ Theme Name:   Kadence Child — AscendMen
+ Theme URI:    https://ascendmen.com
+ Description:  AscendMen child theme for Kadence
+ Author:       AscendMen
+ Template:     kadence
+ Version:      1.0.0
+*/
+
+/* Brand Variables */
+:root {
+  --am-flame-blue:   #29ABE2;
+  --am-navy:         #1B2A4A;
+  --am-steel-blue:   #4A7FC1;
+  --am-white:        #FFFFFF;
+  --am-dark-nav:     #111d33;
+}

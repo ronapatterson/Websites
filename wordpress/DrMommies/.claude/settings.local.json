@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/dev/repos/Websites/wordpress/**)",
+      "WebFetch(domain:drmommies.com)",
+      "Bash(sudo service:*)",
+      "Read(//var/www/html/**)",
+      "Bash(wp --info --allow-root --path=/var/www/html)",
+      "Bash(curl -s http://localhost/)",
+      "Bash(wp post:*)",
+      "Bash(sudo mysql:*)",
+      "Bash(__NEW_LINE_164de49304d0b2b5__ wp post update 18 --post_content=\"<p>Elegant yet simple — omega-3 rich salmon served over fluffy herbed quinoa. A nourishing weeknight dinner that comes together in 30 minutes.</p>:*)",
+      "Bash(__NEW_LINE_164de49304d0b2b5__ echo:*)",
+      "Bash(__NEW_LINE_85aefcfdd7040cca__ wp post update 16 --post_content=\"<p>A rich, velvety tomato sauce with five hidden vegetables. Picky eaters will never guess — and you will feel great knowing every bowl is loaded with nutrients.</p>:*)",
+      "Bash(__NEW_LINE_85aefcfdd7040cca__ wp post update 19 --post_content=\"<p>Crispy on the outside, tender inside — these oven-baked sweet potato fries are a healthier alternative to deep-fried versions and are irresistible as a snack or side dish.</p>:*)",
+      "Bash(__NEW_LINE_85aefcfdd7040cca__ echo:*)",
+      "Bash(__NEW_LINE_9e3e7e63bad739d0__ wp post update 21 --post_content=\"<p>Sunday meal prep feels daunting for large families — but with the right system, you can prepare five wholesome dinners, five packed lunches, and a week of healthy breakfasts in just two hours. Here is our proven system.</p>:*)",
+      "Bash(__NEW_LINE_9e3e7e63bad739d0__ echo:*)",
+      "Bash(wp rewrite:*)",
+      "Bash(wp option:*)",
+      "Read(//etc/apache2/sites-enabled/**)",
+      "Bash(rsync -a /var/www/html/ /home/dev/repos/Websites/wordpress/DrMommies/ --exclude='.claude')",
+      "Read(//etc/apache2/sites-available/**)"
+    ],
+    "additionalDirectories": [
+      "/var/www/html/wp-content/themes/drmommies"
+    ]
+  }
+}

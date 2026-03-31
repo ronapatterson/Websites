@@ -1,0 +1,10 @@
+{"type":"server-started","port":53291,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:53291","screen_dir":"/home/dev/repos/Websites/wordpress/AscendMen/.superpowers/brainstorm/958295-1774432135"}
+{"type":"screen-added","file":"/home/dev/repos/Websites/wordpress/AscendMen/.superpowers/brainstorm/958295-1774432135/visual-identity.html"}
+{"source":"user-event","type":"click","text":"ASCEND\n      MEN\n      \n      SON · LEADER · FATHER\n    \n    \n      Bold & Rugged\n      Deep navy + crimson red. Strong, masculine, commanding. Feels like a men's movement — serious, driven, counter-cultural.","choice":"bold-mountain","id":null,"timestamp":1774432502892}
+{"source":"user-event","type":"click","text":"ASCEND\n      MEN\n      \n      SON · LEADER · FATHER\n    \n    \n      Bold & Rugged\n      Deep navy + crimson red. Strong, masculine, commanding. Feels like a men's movement — serious, driven, counter-cultural.","choice":"bold-mountain","id":null,"timestamp":1774432504106}
+{"type":"screen-added","file":"/home/dev/repos/Websites/wordpress/AscendMen/.superpowers/brainstorm/958295-1774432135/color-palette.html"}
+{"source":"user-event","type":"click","text":"✓\n    Looks great — approvedProceed with this palette","choice":"approved","id":null,"timestamp":1774432944987}
+{"source":"user-event","type":"click","text":"✓\n    Looks great — approvedProceed with this palette","choice":"approved","id":null,"timestamp":1774432945331}
+{"source":"user-event","type":"click","text":"✓\n    Looks great — approvedProceed with this palette","choice":"approved","id":null,"timestamp":1774432945582}
+{"type":"screen-added","file":"/home/dev/repos/Websites/wordpress/AscendMen/.superpowers/brainstorm/958295-1774432135/waiting-1.html"}
+{"type":"server-stopped","reason":"idle timeout"}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2f1c6a"/>
+      <stop offset="100%" style="stop-color:#1F1346"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="280" fill="url(#bg3)"/>
+  <!-- Pancake stack -->
+  <ellipse cx="200" cy="200" rx="90" ry="18" fill="#d4a843" opacity="0.5"/>
+  <!-- Pancake 3 (bottom) -->
+  <ellipse cx="200" cy="190" rx="85" ry="15" fill="#d4a843"/>
+  <ellipse cx="200" cy="178" rx="85" ry="15" fill="#bf8c2e"/>
+  <!-- Pancake 2 -->
+  <ellipse cx="200" cy="165" rx="80" ry="14" fill="#e0b554"/>
+  <ellipse cx="200" cy="153" rx="80" ry="14" fill="#c9972f"/>
+  <!-- Pancake 1 (top) -->
+  <ellipse cx="200" cy="140" rx="75" ry="13" fill="#f0c65a"/>
+  <ellipse cx="200" cy="128" rx="75" ry="13" fill="#d4a843"/>
+  <!-- Syrup drips -->
+  <path d="M250 128 Q255 145 252 165" stroke="#8b4513" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M160 130 Q155 148 158 165" stroke="#8b4513" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Berries on top -->
+  <circle cx="185" cy="120" r="10" fill="#e91e63"/>
+  <circle cx="205" cy="115" r="9" fill="#9c27b0"/>
+  <circle cx="220" cy="120" r="8" fill="#e91e63"/>
+  <circle cx="195" cy="108" r="7" fill="#9c27b0"/>
+  <!-- Banana slices -->
+  <ellipse cx="165" cy="125" rx="12" ry="7" fill="#fdd835" transform="rotate(-15 165 125)"/>
+  <ellipse cx="235" cy="122" rx="11" ry="6" fill="#fdd835" transform="rotate(10 235 122)"/>
+  <!-- Powdered sugar effect -->
+  <ellipse cx="200" cy="115" rx="70" ry="10" fill="rgba(255,255,255,0.15)"/>
+  <!-- Fork -->
+  <rect x="310" y="100" width="5" height="90" rx="2.5" fill="#9e9e9e"/>
+  <rect x="300" y="100" width="3" height="35" rx="1.5" fill="#9e9e9e"/>
+  <rect x="317" y="100" width="3" height="35" rx="1.5" fill="#9e9e9e"/>
+  <!-- Label -->
+  <rect x="50" y="220" width="300" height="50" rx="8" fill="rgba(0,0,0,0.5)"/>
+  <text x="200" y="245" text-anchor="middle" fill="#ebe4ff" font-family="Georgia, serif" font-size="15" font-weight="bold">Oat Banana Pancakes</text>
+  <text x="200" y="263" text-anchor="middle" fill="rgba(235,228,255,0.6)" font-family="Arial, sans-serif" font-size="11">Gluten-free · Kid-approved</text>
+</svg>

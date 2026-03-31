@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version)",
+      "Bash(docker-compose --version)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1/ -H \"Host: perfectloverestored.local\")"
+    ]
+  }
+}

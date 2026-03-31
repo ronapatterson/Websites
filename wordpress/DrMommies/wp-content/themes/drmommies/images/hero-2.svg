@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="280" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1F1346"/>
+      <stop offset="100%" style="stop-color:#2f1c6a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="280" fill="url(#bg2)"/>
+  <!-- Smoothie glass -->
+  <path d="M150 60 L130 220 Q130 240 200 240 Q270 240 270 220 L250 60 Z" fill="#ffe0b2"/>
+  <path d="M150 60 L155 90 Q200 110 245 90 L250 60 Z" fill="#ffcc80"/>
+  <!-- Smoothie content - green -->
+  <path d="M135 120 Q135 240 200 240 Q265 240 265 120 Z" fill="#66bb6a"/>
+  <ellipse cx="200" cy="120" rx="65" ry="12" fill="#81c784"/>
+  <!-- Straw -->
+  <rect x="215" y="30" width="8" height="120" rx="4" fill="#e91e63"/>
+  <rect x="215" y="30" width="8" height="20" rx="4" fill="#f48fb1"/>
+  <!-- Fruit decoration -->
+  <circle cx="155" cy="100" r="12" fill="#e53935" opacity="0.8"/>
+  <circle cx="245" cy="95" r="10" fill="#fdd835" opacity="0.9"/>
+  <!-- Mint garnish -->
+  <path d="M170 60 Q165 45 175 40 Q178 52 170 60" fill="#4caf50"/>
+  <path d="M180 58 Q180 42 190 38 Q188 52 180 58" fill="#66bb6a"/>
+  <!-- Label -->
+  <rect x="50" y="220" width="300" height="50" rx="8" fill="rgba(0,0,0,0.5)"/>
+  <text x="200" y="245" text-anchor="middle" fill="#ebe4ff" font-family="Georgia, serif" font-size="15" font-weight="bold">Green Immunity Smoothie</text>
+  <text x="200" y="263" text-anchor="middle" fill="rgba(235,228,255,0.6)" font-family="Arial, sans-serif" font-size="11">Packed with vitamins &amp; antioxidants</text>
+</svg>

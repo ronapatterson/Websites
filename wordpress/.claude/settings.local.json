@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:basileia-life-transformation-ministries-agb2bbvxgncpdglg.builder-preview.com)",
+      "Bash(docker --version)",
+      "Bash(docker compose:*)",
+      "Bash(docker-compose --version)",
+      "Bash(php --version)",
+      "Bash(mysql --version)",
+      "Bash(sudo service:*)",
+      "Bash(sudo systemctl:*)",
+      "Bash(sudo mysql:*)",
+      "Bash(wp --info --path=/home/dev/repos/Websites/wordpress)",
+      "Bash(wp core:*)",
+      "Bash(wp theme:*)",
+      "Bash(wp plugin:*)",
+      "Bash(wp media:*)",
+      "Bash(wp post:*)",
+      "Bash(wp eval-file:*)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(wp eval:*)",
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(php -r \":*)",
+      "Bash(php -l /home/dev/repos/Websites/wordpress/setup-basileia.php)",
+      "Bash(wp option:*)",
+      "Bash(wp menu:*)",
+      "Bash(wp rewrite:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/)",
+      "Bash(curl -s http://localhost:8080/)",
+      "Bash(curl -s http://localhost:8080/about/)",
+      "Bash(curl -s http://localhost:8080/events/)",
+      "Bash(wp --path=/home/dev/repos/Websites/wordpress/BasileiaLife option get siteurl --allow-root)"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -v)",
+      "Bash(mysql --version)",
+      "Bash(wp --version)",
+      "Bash(apache2 -v)",
+      "Bash(wp --version --allow-root)",
+      "Bash(apache2ctl -v)",
+      "Bash(chmod:*)",
+      "Bash(/root/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.5/skills/brainstorming/scripts/start-server.sh --project-dir /home/dev/repos/Websites/wordpress/AscendMen)",
+      "Bash(apache2ctl -S)",
+      "Read(//etc/apache2/sites-enabled/**)",
+      "Bash(mysql -u root -e \"SHOW DATABASES;\")",
+      "Read(//etc/**)",
+      "Bash(mysql -u root --socket=/var/run/mysqld/mysqld.sock -e \"SHOW DATABASES;\")",
+      "Bash(mysql -u root -proot -e \"SHOW DATABASES;\")",
+      "Bash(mysql:*)",
+      "Bash(sudo mysql:*)",
+      "Read(//home/dev/repos/Websites/wordpress/**)",
+      "Read(//home/dev/repos/Websites/wordpress/DrMommies/**)",
+      "Bash(mysqladmin -u wp_user -pwp_secure_pass_2024 -h 127.0.0.1 status)",
+      "Bash(service mysql:*)",
+      "Bash(systemctl status:*)",
+      "Bash(service apache2:*)",
+      "Bash(wp core:*)",
+      "Bash(wp config:*)",
+      "Bash(wp rewrite:*)",
+      "Bash(a2ensite:*)",
+      "Bash(a2enmod rewrite:*)",
+      "Bash(curl:*)",
+      "Bash(wp theme:*)",
+      "Bash(wp eval:*)",
+      "Bash(wp plugin:*)",
+      "Bash(wp term:*)",
+      "Bash(wp option:*)",
+      "Bash(wp post:*)",
+      "Bash(wp menu:*)",
+      "Bash(apache2ctl -M)",
+      "Bash(chown -R www-data:www-data /home/dev/repos/Websites/wordpress/AscendMen/wp-content/uploads)"
+    ]
+  }
+}

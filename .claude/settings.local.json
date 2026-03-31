@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:drmommies.com)",
+      "Bash(mysql --version)",
+      "Bash(php --version)",
+      "Bash(apache2 -v)",
+      "Bash(nginx -v)",
+      "Bash(docker --version)",
+      "Bash(docker-compose --version)",
+      "Bash(apt-get --version)",
+      "Bash(dpkg -l)",
+      "Bash(apt-get install:*)",
+      "Bash(apt-get update:*)",
+      "Bash(apt-cache search:*)",
+      "Bash(DEBIAN_FRONTEND=noninteractive apt-get install -y php php-mysql php-curl php-gd php-mbstring php-xml php-zip php-intl mysql-server apache2 libapache2-mod-php)",
+      "Bash(service mysql:*)",
+      "Bash(service apache2:*)",
+      "Bash(mysql -u:*)",
+      "Read(//var/www/html/**)",
+      "Bash(wget -q https://wordpress.org/latest.tar.gz)",
+      "Bash(tar -xzf latest.tar.gz)",
+      "Bash(mv wordpress/* .)",
+      "Bash(rmdir wordpress:*)",
+      "Bash(wp theme:*)",
+      "Bash(wp option:*)",
+      "Bash(wp rewrite:*)",
+      "Bash(wp eval:*)",
+      "Read(//var/log/apache2/**)",
+      "Bash(curl -s http://localhost/)",
+      "Bash(1 curl:*)",
+      "Bash(wp --version --allow-root)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/recipes/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/blog/)"
+    ],
+    "additionalDirectories": [
+      "/etc/apache2/sites-available",
+      "/var/www/html/wp-content/themes/drmommies",
+      "/var/www/html"
+    ]
+  }
+}

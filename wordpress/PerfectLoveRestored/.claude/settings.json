@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/PerfectLoveRestored/)",
+      "Bash(curl -s http://localhost/PerfectLoveRestored/)",
+      "Read(//var/log/apache2/**)",
+      "Bash(curl -s http://localhost/PerfectLoveRestored/wp-login.php)",
+      "Bash(a2ensite perfectloverestored.conf)",
+      "Bash(curl -s http://perfectloverestored.local/)",
+      "Bash(sudo -u www-data php -r \":*)",
+      "Read(//home/dev/repos/Websites/wordpress/DrMommies/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://perfectloverestored.local/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://perfectloverestored.local/about/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://perfectloverestored.local/perfectlove/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://perfectloverestored.local/store/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://perfectloverestored.local/donate/)",
+      "Bash(curl -s http://perfectloverestored.local/about/)",
+      "Bash(curl -s http://perfectloverestored.local/perfectlove/)"
+    ]
+  }
+}
