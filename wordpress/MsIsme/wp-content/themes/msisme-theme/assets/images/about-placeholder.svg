@@ -1,0 +1,4 @@
+<svg width="600" height="500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="500" fill="#D4A853" rx="16"/>
+  <text x="300" y="250" text-anchor="middle" fill="#7A4A1F" font-family="sans-serif" font-size="24">Photo Placeholder</text>
+</svg>

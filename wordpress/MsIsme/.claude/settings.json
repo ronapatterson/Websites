@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:wellqor.com)",
+      "Read(//home/dev/repos/Websites/wordpress/PerfectLoveRestored/**)",
+      "Read(//root/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6/skills/subagent-driven-development/**)",
+      "Bash(mysql -u root -e \"SELECT 1\")",
+      "Bash(apache2ctl -M)",
+      "Bash(mysql -u root -e \"CREATE DATABASE IF NOT EXISTS msisme CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(mysql -u root -e \"CREATE USER IF NOT EXISTS ''msisme_user''@''127.0.0.1'' IDENTIFIED BY ''MsIsme_Str0ng_P@ss2026'';\")",
+      "Bash(mysql -u root -e \"GRANT ALL PRIVILEGES ON msisme.* TO ''msisme_user''@''127.0.0.1'';\")",
+      "Bash(mysql -u root -e \"FLUSH PRIVILEGES;\")",
+      "Bash(curl -sO https://wordpress.org/latest.tar.gz)",
+      "Bash(tar -xzf latest.tar.gz --strip-components=1)",
+      "Bash(curl -s https://api.wordpress.org/secret-key/1.1/salt/)",
+      "Bash(ln -sf /home/dev/repos/Websites/wordpress/MsIsme /var/www/html/MsIsme)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/MsIsme/)",
+      "Bash(mysql -u root -e \"SHOW TABLES FROM msisme;\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/MsIsme/wp-login.php)",
+      "Bash(curl -sv http://localhost/MsIsme/wp-login.php)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/PerfectLoveRestored/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/MsIsme/index.php)",
+      "Bash(curl -sL -o /dev/null -w \"%{http_code}\" http://localhost/MsIsme/index.php)",
+      "Bash(curl -sv http://localhost/MsIsme/index.php)",
+      "Bash(wp eval:*)",
+      "Bash(curl -sv http://localhost/PerfectLoveRestored/wp-login.php)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(apache2ctl -S)",
+      "Bash(a2ensite msisme.conf)",
+      "Bash(apache2ctl restart:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -H \"Host: msisme.local\" http://127.0.0.1/)",
+      "Bash(WP_PATH=\"/home/dev/repos/Websites/wordpress/MsIsme\")",
+      "Bash(wp plugin:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -H \"Host: msisme.local\" http://127.0.0.1/about/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -H \"Host: msisme.local\" http://127.0.0.1/services/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -H \"Host: msisme.local\" http://127.0.0.1/contact/)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "Bash(curl -s -H \"Host: msisme.local\" http://127.0.0.1/)"
+    ]
+  }
+}
