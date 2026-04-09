@@ -479,7 +479,8 @@ function drmommies_moderation_page_callback() {
             }
         }
 
-        echo '<div class="notice notice-success"><p>Action completed.</p></div>';
+        wp_redirect(admin_url('edit.php?post_type=recipe&page=recipe-moderation&msg=success'));
+        exit;
     }
 
     // Fetch pending items
@@ -513,6 +514,9 @@ function drmommies_moderation_page_callback() {
     ?>
     <div class="wrap">
         <h1>Reviews &amp; FAQ Moderation</h1>
+        <?php if (isset($_GET['msg']) && $_GET['msg'] === 'success') : ?>
+            <div class="notice notice-success"><p>Action completed.</p></div>
+        <?php endif; ?>
 
         <h2>Pending Reviews (<?php echo count($pending_reviews); ?>)</h2>
         <?php if (empty($pending_reviews)) : ?>
@@ -596,7 +600,6 @@ function drmommies_moderation_page_callback() {
                                 <button type="submit" name="moderation_action" value="delete" class="button button-small" style="margin-top:4px;" onclick="return confirm('Delete this FAQ?');">Delete</button>
                             </form>
                         </td>
-                        <td></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
