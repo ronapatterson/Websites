@@ -200,16 +200,48 @@ add_action('wp_ajax_nopriv_newsletter_signup', 'drmommies_newsletter_signup');
 // Create newsletter subscribers table on theme activation
 function drmommies_create_tables() {
     global $wpdb;
-    $table = $wpdb->prefix . 'newsletter_subscribers';
     $charset = $wpdb->get_charset_collate();
-    $sql = "CREATE TABLE IF NOT EXISTS $table (
+    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+    // Newsletter subscribers table
+    $table1 = $wpdb->prefix . 'newsletter_subscribers';
+    dbDelta("CREATE TABLE IF NOT EXISTS $table1 (
         id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
         email VARCHAR(255) NOT NULL UNIQUE,
         created_at DATETIME NOT NULL,
         PRIMARY KEY (id)
-    ) $charset;";
-    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-    dbDelta($sql);
+    ) $charset;");
+
+    // Recipe ratings table
+    $table2 = $wpdb->prefix . 'recipe_ratings';
+    dbDelta("CREATE TABLE IF NOT EXISTS $table2 (
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        recipe_id BIGINT UNSIGNED NOT NULL,
+        user_id BIGINT UNSIGNED NOT NULL,
+        rating TINYINT UNSIGNED NOT NULL,
+        review_text TEXT NULL,
+        approved TINYINT UNSIGNED NOT NULL DEFAULT 1,
+        created_at DATETIME NOT NULL,
+        PRIMARY KEY (id),
+        UNIQUE KEY recipe_user (recipe_id, user_id),
+        KEY recipe_id (recipe_id),
+        KEY approved (approved)
+    ) $charset;");
+
+    // Recipe FAQs table
+    $table3 = $wpdb->prefix . 'recipe_faqs';
+    dbDelta("CREATE TABLE IF NOT EXISTS $table3 (
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        recipe_id BIGINT UNSIGNED NOT NULL,
+        user_id BIGINT UNSIGNED NOT NULL,
+        question TEXT NOT NULL,
+        answer TEXT NULL,
+        approved TINYINT UNSIGNED NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL,
+        PRIMARY KEY (id),
+        KEY recipe_id (recipe_id),
+        KEY approved (approved)
+    ) $charset;");
 }
 add_action('after_switch_theme', 'drmommies_create_tables');
 
@@ -246,4 +278,81 @@ function drmommies_get_recipe_meta($post_id) {
         'difficulty'  => get_post_meta($post_id, '_difficulty', true) ?: 'easy',
         'ingredients' => get_post_meta($post_id, '_ingredients', true) ?: '',
     ];
+}
+
+// Helper: get cached recipe rating data
+function drmommies_get_recipe_rating($post_id) {
+    return [
+        'average' => (float) get_post_meta($post_id, '_rating_average', true) ?: 0,
+        'count'   => (int) get_post_meta($post_id, '_rating_count', true) ?: 0,
+        'review_count' => (int) get_post_meta($post_id, '_review_count', true) ?: 0,
+    ];
+}
+
+// Helper: recalculate and cache rating meta from the ratings table
+function drmommies_update_rating_cache($recipe_id) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'recipe_ratings';
+
+    $stats = $wpdb->get_row($wpdb->prepare(
+        "SELECT AVG(rating) as avg_rating, COUNT(*) as total_count FROM $table WHERE recipe_id = %d",
+        $recipe_id
+    ));
+    $review_count = (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table WHERE recipe_id = %d AND review_text IS NOT NULL AND review_text != '' AND approved = 1",
+        $recipe_id
+    ));
+
+    $average = $stats->avg_rating ? round((float) $stats->avg_rating, 1) : 0;
+    $count = (int) $stats->total_count;
+
+    update_post_meta($recipe_id, '_rating_average', $average);
+    update_post_meta($recipe_id, '_rating_count', $count);
+    update_post_meta($recipe_id, '_review_count', $review_count);
+
+    return ['average' => $average, 'count' => $count, 'review_count' => $review_count];
+}
+
+// Helper: get approved reviews for a recipe
+function drmommies_get_approved_reviews($post_id) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'recipe_ratings';
+
+    return $wpdb->get_results($wpdb->prepare(
+        "SELECT r.rating, r.review_text, r.created_at, u.display_name
+         FROM $table r
+         JOIN {$wpdb->users} u ON r.user_id = u.ID
+         WHERE r.recipe_id = %d AND r.review_text IS NOT NULL AND r.review_text != '' AND r.approved = 1
+         ORDER BY r.created_at DESC",
+        $post_id
+    ));
+}
+
+// Helper: get approved FAQs for a recipe
+function drmommies_get_approved_faqs($post_id) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'recipe_faqs';
+
+    return $wpdb->get_results($wpdb->prepare(
+        "SELECT f.question, f.answer, f.created_at, u.display_name
+         FROM $table f
+         JOIN {$wpdb->users} u ON f.user_id = u.ID
+         WHERE f.recipe_id = %d AND f.approved = 1
+         ORDER BY f.created_at DESC",
+        $post_id
+    ));
+}
+
+// Helper: render read-only stars HTML
+function drmommies_render_stars_html($average, $count) {
+    $html = '<span class="recipe-stars-display">';
+    for ($i = 1; $i <= 5; $i++) {
+        if ($i <= round($average)) {
+            $html .= '<span class="star filled">&#9733;</span>';
+        } else {
+            $html .= '<span class="star empty">&#9733;</span>';
+        }
+    }
+    $html .= ' <span class="rating-count">(' . intval($count) . ')</span></span>';
+    return $html;
 }
