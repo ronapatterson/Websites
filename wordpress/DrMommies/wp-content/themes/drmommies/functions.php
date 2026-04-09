@@ -435,3 +435,173 @@ function drmommies_submit_faq() {
     wp_send_json_success(['message' => 'Your question has been submitted and is pending approval.']);
 }
 add_action('wp_ajax_submit_faq', 'drmommies_submit_faq');
+
+// Admin: Recipe moderation page
+function drmommies_admin_moderation_menu() {
+    add_submenu_page(
+        'edit.php?post_type=recipe',
+        'Reviews & FAQ Moderation',
+        'Moderation',
+        'manage_options',
+        'recipe-moderation',
+        'drmommies_moderation_page_callback'
+    );
+}
+add_action('admin_menu', 'drmommies_admin_moderation_menu');
+
+function drmommies_moderation_page_callback() {
+    global $wpdb;
+    $ratings_table = $wpdb->prefix . 'recipe_ratings';
+    $faqs_table = $wpdb->prefix . 'recipe_faqs';
+
+    // Handle actions
+    if (isset($_POST['moderation_action']) && check_admin_referer('drmommies_moderation')) {
+        $action = sanitize_text_field($_POST['moderation_action']);
+        $item_id = absint($_POST['item_id'] ?? 0);
+        $item_type = sanitize_text_field($_POST['item_type'] ?? '');
+
+        if ($item_type === 'review' && $item_id) {
+            if ($action === 'approve') {
+                $wpdb->update($ratings_table, ['approved' => 1], ['id' => $item_id]);
+                $recipe_id = $wpdb->get_var($wpdb->prepare("SELECT recipe_id FROM $ratings_table WHERE id = %d", $item_id));
+                if ($recipe_id) drmommies_update_rating_cache($recipe_id);
+            } elseif ($action === 'delete') {
+                $recipe_id = $wpdb->get_var($wpdb->prepare("SELECT recipe_id FROM $ratings_table WHERE id = %d", $item_id));
+                $wpdb->delete($ratings_table, ['id' => $item_id]);
+                if ($recipe_id) drmommies_update_rating_cache($recipe_id);
+            }
+        } elseif ($item_type === 'faq' && $item_id) {
+            if ($action === 'approve') {
+                $answer = sanitize_textarea_field($_POST['faq_answer'] ?? '');
+                $wpdb->update($faqs_table, ['approved' => 1, 'answer' => $answer ?: null], ['id' => $item_id]);
+            } elseif ($action === 'delete') {
+                $wpdb->delete($faqs_table, ['id' => $item_id]);
+            }
+        }
+
+        echo '<div class="notice notice-success"><p>Action completed.</p></div>';
+    }
+
+    // Fetch pending items
+    $pending_reviews = $wpdb->get_results(
+        "SELECT r.*, u.display_name, p.post_title
+         FROM $ratings_table r
+         JOIN {$wpdb->users} u ON r.user_id = u.ID
+         JOIN {$wpdb->posts} p ON r.recipe_id = p.ID
+         WHERE r.review_text IS NOT NULL AND r.review_text != '' AND r.approved = 0
+         ORDER BY r.created_at DESC"
+    );
+
+    $pending_faqs = $wpdb->get_results(
+        "SELECT f.*, u.display_name, p.post_title
+         FROM $faqs_table f
+         JOIN {$wpdb->users} u ON f.user_id = u.ID
+         JOIN {$wpdb->posts} p ON f.recipe_id = p.ID
+         WHERE f.approved = 0
+         ORDER BY f.created_at DESC"
+    );
+
+    $approved_faqs = $wpdb->get_results(
+        "SELECT f.*, u.display_name, p.post_title
+         FROM $faqs_table f
+         JOIN {$wpdb->users} u ON f.user_id = u.ID
+         JOIN {$wpdb->posts} p ON f.recipe_id = p.ID
+         WHERE f.approved = 1
+         ORDER BY f.created_at DESC"
+    );
+
+    ?>
+    <div class="wrap">
+        <h1>Reviews &amp; FAQ Moderation</h1>
+
+        <h2>Pending Reviews (<?php echo count($pending_reviews); ?>)</h2>
+        <?php if (empty($pending_reviews)) : ?>
+            <p>No pending reviews.</p>
+        <?php else : ?>
+            <table class="widefat striped">
+                <thead><tr><th>Recipe</th><th>User</th><th>Rating</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody>
+                <?php foreach ($pending_reviews as $review) : ?>
+                    <tr>
+                        <td><a href="<?php echo get_edit_post_link($review->recipe_id); ?>"><?php echo esc_html($review->post_title); ?></a></td>
+                        <td><?php echo esc_html($review->display_name); ?></td>
+                        <td><?php echo str_repeat('&#9733;', $review->rating) . str_repeat('&#9734;', 5 - $review->rating); ?></td>
+                        <td><?php echo esc_html($review->review_text); ?></td>
+                        <td><?php echo esc_html($review->created_at); ?></td>
+                        <td>
+                            <form method="post" style="display:inline;">
+                                <?php wp_nonce_field('drmommies_moderation'); ?>
+                                <input type="hidden" name="item_id" value="<?php echo esc_attr($review->id); ?>">
+                                <input type="hidden" name="item_type" value="review">
+                                <button type="submit" name="moderation_action" value="approve" class="button button-primary button-small">Approve</button>
+                                <button type="submit" name="moderation_action" value="delete" class="button button-small" onclick="return confirm('Delete this review?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+
+        <hr>
+        <h2>Pending Questions (<?php echo count($pending_faqs); ?>)</h2>
+        <?php if (empty($pending_faqs)) : ?>
+            <p>No pending questions.</p>
+        <?php else : ?>
+            <table class="widefat striped">
+                <thead><tr><th>Recipe</th><th>User</th><th>Question</th><th>Date</th><th>Answer &amp; Actions</th></tr></thead>
+                <tbody>
+                <?php foreach ($pending_faqs as $faq) : ?>
+                    <tr>
+                        <td><a href="<?php echo get_edit_post_link($faq->recipe_id); ?>"><?php echo esc_html($faq->post_title); ?></a></td>
+                        <td><?php echo esc_html($faq->display_name); ?></td>
+                        <td><?php echo esc_html($faq->question); ?></td>
+                        <td><?php echo esc_html($faq->created_at); ?></td>
+                        <td>
+                            <form method="post">
+                                <?php wp_nonce_field('drmommies_moderation'); ?>
+                                <input type="hidden" name="item_id" value="<?php echo esc_attr($faq->id); ?>">
+                                <input type="hidden" name="item_type" value="faq">
+                                <textarea name="faq_answer" rows="2" style="width:100%;margin-bottom:6px;" placeholder="Write an answer (optional)..."></textarea>
+                                <button type="submit" name="moderation_action" value="approve" class="button button-primary button-small">Approve</button>
+                                <button type="submit" name="moderation_action" value="delete" class="button button-small" onclick="return confirm('Delete this question?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+
+        <hr>
+        <h2>Approved FAQs (<?php echo count($approved_faqs); ?>)</h2>
+        <?php if (empty($approved_faqs)) : ?>
+            <p>No approved FAQs yet.</p>
+        <?php else : ?>
+            <table class="widefat striped">
+                <thead><tr><th>Recipe</th><th>User</th><th>Question</th><th>Answer</th><th>Actions</th></tr></thead>
+                <tbody>
+                <?php foreach ($approved_faqs as $faq) : ?>
+                    <tr>
+                        <td><a href="<?php echo get_edit_post_link($faq->recipe_id); ?>"><?php echo esc_html($faq->post_title); ?></a></td>
+                        <td><?php echo esc_html($faq->display_name); ?></td>
+                        <td><?php echo esc_html($faq->question); ?></td>
+                        <td>
+                            <form method="post">
+                                <?php wp_nonce_field('drmommies_moderation'); ?>
+                                <input type="hidden" name="item_id" value="<?php echo esc_attr($faq->id); ?>">
+                                <input type="hidden" name="item_type" value="faq">
+                                <textarea name="faq_answer" rows="2" style="width:100%;"><?php echo esc_textarea($faq->answer); ?></textarea>
+                                <button type="submit" name="moderation_action" value="approve" class="button button-primary button-small" style="margin-top:4px;">Update Answer</button>
+                                <button type="submit" name="moderation_action" value="delete" class="button button-small" style="margin-top:4px;" onclick="return confirm('Delete this FAQ?');">Delete</button>
+                            </form>
+                        </td>
+                        <td></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+    <?php
+}
