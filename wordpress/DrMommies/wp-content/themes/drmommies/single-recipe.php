@@ -308,6 +308,11 @@
                                 <span>⏱ <?php echo esc_html($rmeta['prep_time']); ?></span>
                                 <span>🍽 <?php echo esc_html($rmeta['servings']); ?></span>
                             </div>
+                            <?php
+                            $rel_rating = drmommies_get_recipe_rating(get_the_ID());
+                            if ($rel_rating['count'] > 0) : ?>
+                                <div class="card-rating"><?php echo drmommies_render_stars_html($rel_rating['average'], $rel_rating['count']); ?></div>
+                            <?php endif; ?>
                             <h3><?php the_title(); ?></h3>
                             <p><?php echo wp_trim_words(get_the_excerpt(), 14); ?></p>
                         </div>
