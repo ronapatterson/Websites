@@ -20,6 +20,13 @@ get_header(); ?>
                 <input type="search" id="recipe-search" placeholder="Search recipes..." aria-label="Search recipes">
                 <span class="search-icon">🔍</span>
             </div>
+                <div class="recipe-sort-wrap">
+                    <select id="recipe-sort" aria-label="Sort recipes">
+                        <option value="newest">Newest</option>
+                        <option value="highest-rated">Highest Rated</option>
+                        <option value="most-reviewed">Most Reviewed</option>
+                    </select>
+                </div>
         </div>
         <div class="recipe-filter-row">
             <button class="filter-btn active" data-cat="">All Recipes</button>
@@ -30,6 +37,11 @@ get_header(); ?>
                     <button class="filter-btn" data-cat="<?php echo esc_attr($term->slug); ?>"><?php echo esc_html($term->name); ?></button>
                 <?php endforeach;
             endif; ?>
+        </div>
+        <div class="recipe-rating-filter-row">
+            <button class="filter-btn rating-filter active" data-min-rating="0">All Ratings</button>
+            <button class="filter-btn rating-filter" data-min-rating="4">4+ Stars</button>
+            <button class="filter-btn rating-filter" data-min-rating="3">3+ Stars</button>
         </div>
     </div>
 </section>
@@ -137,18 +149,31 @@ get_header(); ?>
     var noResults = document.getElementById('no-recipes');
     var countBar = document.getElementById('recipes-count');
     var searchInput = document.getElementById('recipe-search');
+    var sortSelect = document.getElementById('recipe-sort');
+
+    function getActiveCategory() {
+        var btn = document.querySelector('.filter-btn.active:not(.rating-filter)');
+        return btn ? btn.getAttribute('data-cat') : '';
+    }
+
+    function getMinRating() {
+        var btn = document.querySelector('.rating-filter.active');
+        return btn ? parseFloat(btn.getAttribute('data-min-rating')) : 0;
+    }
 
     function filterRecipes() {
-        var activeBtn = document.querySelector('.filter-btn.active');
-        var activeCat = activeBtn ? activeBtn.getAttribute('data-cat') : '';
+        var activeCat = getActiveCategory();
+        var minRating = getMinRating();
         var searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
         var cards = grid.querySelectorAll('.recipe-card');
         var visible = 0;
 
         cards.forEach(function(card) {
             var catMatch = !activeCat || card.getAttribute('data-category') === activeCat;
-            var titleMatch = !searchVal || card.getAttribute('data-title').includes(searchVal) || card.querySelector('p')?.textContent.toLowerCase().includes(searchVal);
-            if (catMatch && titleMatch) {
+            var titleMatch = !searchVal || card.getAttribute('data-title').includes(searchVal) || (card.querySelector('p') && card.querySelector('p').textContent.toLowerCase().includes(searchVal));
+            var ratingMatch = !minRating || parseFloat(card.getAttribute('data-rating') || 0) >= minRating;
+
+            if (catMatch && titleMatch && ratingMatch) {
                 card.style.display = '';
                 visible++;
             } else {
@@ -162,10 +187,37 @@ get_header(); ?>
         }
     }
 
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    function sortRecipes() {
+        var sortVal = sortSelect ? sortSelect.value : 'newest';
+        var cards = Array.from(grid.querySelectorAll('.recipe-card'));
+
+        cards.sort(function(a, b) {
+            if (sortVal === 'highest-rated') {
+                return (parseFloat(b.getAttribute('data-rating') || 0)) - (parseFloat(a.getAttribute('data-rating') || 0));
+            } else if (sortVal === 'most-reviewed') {
+                return (parseInt(b.getAttribute('data-rating-count') || 0)) - (parseInt(a.getAttribute('data-rating-count') || 0));
+            } else {
+                return (parseInt(a.getAttribute('data-index') || 0)) - (parseInt(b.getAttribute('data-index') || 0));
+            }
+        });
+
+        cards.forEach(function(card) { grid.appendChild(card); });
+        filterRecipes();
+    }
+
+    // Category filter buttons
+    document.querySelectorAll('.filter-btn:not(.rating-filter)').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('.filter-btn:not(.rating-filter)').forEach(function(b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            filterRecipes();
+        });
+    });
+
+    // Rating filter buttons
+    document.querySelectorAll('.rating-filter').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.rating-filter').forEach(function(b) { b.classList.remove('active'); });
             this.classList.add('active');
             filterRecipes();
         });
@@ -176,7 +228,12 @@ get_header(); ?>
         searchInput.addEventListener('input', filterRecipes);
     }
 
-    // Init count
+    // Sort
+    if (sortSelect) {
+        sortSelect.addEventListener('change', sortRecipes);
+    }
+
+    // Init
     filterRecipes();
 })();
 
