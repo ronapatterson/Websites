@@ -13,6 +13,19 @@
         'fiber'     => get_post_meta(get_the_ID(), '_fiber', true) ?: '',
     ];
 
+    $rating_data = drmommies_get_recipe_rating(get_the_ID());
+    $user_rating = null;
+    $user_can_rate = false;
+    if (is_user_logged_in()) {
+        global $wpdb;
+        $ratings_table = $wpdb->prefix . 'recipe_ratings';
+        $user_rating = $wpdb->get_var($wpdb->prepare(
+            "SELECT rating FROM $ratings_table WHERE recipe_id = %d AND user_id = %d",
+            get_the_ID(), get_current_user_id()
+        ));
+        $user_can_rate = !$user_rating;
+    }
+
     // JSON-LD structured data for SEO
     $ld = [
         '@context'     => 'https://schema.org',
@@ -30,6 +43,13 @@
         'datePublished' => get_the_date('c'),
         'image'        => has_post_thumbnail() ? get_the_post_thumbnail_url(null, 'large') : '',
     ];
+    if ($rating_data['count'] > 0) {
+        $ld['aggregateRating'] = [
+            '@type'       => 'AggregateRating',
+            'ratingValue' => (string) $rating_data['average'],
+            'ratingCount' => (string) $rating_data['count'],
+        ];
+    }
 ?>
 
 <script type="application/ld+json"><?php echo json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
@@ -63,6 +83,38 @@
                     <button class="btn-save-recipe" data-id="<?php the_ID(); ?>" aria-label="Save recipe">
                         ♡ Save
                     </button>
+                    <div class="recipe-rating-widget" data-recipe-id="<?php the_ID(); ?>">
+                        <?php if ($user_can_rate) : ?>
+                            <div class="rating-interactive">
+                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                    <span class="star interactive" data-value="<?php echo $i; ?>">&#9733;</span>
+                                <?php endfor; ?>
+                            </div>
+                        <?php elseif ($user_rating) : ?>
+                            <div class="rating-user-voted">
+                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                    <span class="star <?php echo $i <= $user_rating ? 'filled' : 'empty'; ?>">&#9733;</span>
+                                <?php endfor; ?>
+                                <span class="rating-label">You rated this <?php echo intval($user_rating); ?> star<?php echo $user_rating > 1 ? 's' : ''; ?></span>
+                            </div>
+                        <?php else : ?>
+                            <div class="rating-login-prompt">
+                                <?php echo drmommies_render_stars_html($rating_data['average'], $rating_data['count']); ?>
+                                <a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>">Log in to rate</a>
+                            </div>
+                        <?php endif; ?>
+                        <div class="rating-average">
+                            <?php echo drmommies_render_stars_html($rating_data['average'], $rating_data['count']); ?>
+                        </div>
+                        <div class="rating-message" style="display:none;"></div>
+                    </div>
+                    <?php if ($user_can_rate) : ?>
+                    <div class="review-form-inline" id="review-form-inline" style="display:none;">
+                        <textarea id="review-text" rows="3" placeholder="Add a written review (optional)..." maxlength="1000"></textarea>
+                        <button type="button" class="btn-submit-rating" id="btn-submit-rating">Submit Rating</button>
+                        <button type="button" class="btn-skip-review" id="btn-skip-review">Skip Review, Just Rate</button>
+                    </div>
+                    <?php endif; ?>
                 </div>
 
                 <?php if (has_post_thumbnail()) : ?>
