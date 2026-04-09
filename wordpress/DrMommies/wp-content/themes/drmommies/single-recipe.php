@@ -196,6 +196,74 @@
             </aside>
         </div>
 
+        <!-- Reviews Section -->
+        <?php
+        $approved_reviews = drmommies_get_approved_reviews(get_the_ID());
+        ?>
+        <div class="recipe-reviews-section">
+            <h2>Reviews (<?php echo count($approved_reviews); ?>)</h2>
+            <?php if (!empty($approved_reviews)) : ?>
+                <div class="reviews-list">
+                    <?php foreach ($approved_reviews as $review) : ?>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-author"><?php echo esc_html($review->display_name); ?></span>
+                                <span class="review-stars">
+                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                        <span class="star <?php echo $i <= $review->rating ? 'filled' : 'empty'; ?>">&#9733;</span>
+                                    <?php endfor; ?>
+                                </span>
+                                <span class="review-date"><?php echo esc_html(date('M j, Y', strtotime($review->created_at))); ?></span>
+                            </div>
+                            <p class="review-text"><?php echo esc_html($review->review_text); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else : ?>
+                <p class="no-reviews">No reviews yet. Be the first to review this recipe!</p>
+            <?php endif; ?>
+        </div>
+
+        <!-- FAQ Section -->
+        <?php
+        $approved_faqs = drmommies_get_approved_faqs(get_the_ID());
+        ?>
+        <div class="recipe-faq-section">
+            <h2>Questions &amp; Answers</h2>
+            <?php if (!empty($approved_faqs)) : ?>
+                <div class="faq-list">
+                    <?php foreach ($approved_faqs as $faq) : ?>
+                        <div class="faq-item">
+                            <button class="faq-question" aria-expanded="false">
+                                <span class="faq-q-label">Q:</span>
+                                <span><?php echo esc_html($faq->question); ?></span>
+                                <span class="faq-toggle">+</span>
+                            </button>
+                            <div class="faq-answer" hidden>
+                                <?php if ($faq->answer) : ?>
+                                    <p><strong>A:</strong> <?php echo esc_html($faq->answer); ?></p>
+                                <?php else : ?>
+                                    <p class="faq-pending-answer"><em>Answer pending</em></p>
+                                <?php endif; ?>
+                                <span class="faq-meta">Asked by <?php echo esc_html($faq->display_name); ?> on <?php echo esc_html(date('M j, Y', strtotime($faq->created_at))); ?></span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (is_user_logged_in()) : ?>
+                <div class="faq-submit-form" data-recipe-id="<?php the_ID(); ?>">
+                    <h4>Ask a Question</h4>
+                    <textarea id="faq-question-input" rows="3" placeholder="What would you like to know about this recipe?" maxlength="500"></textarea>
+                    <button type="button" class="btn btn-primary" id="btn-submit-faq">Submit Question</button>
+                    <div class="faq-form-message" style="display:none;"></div>
+                </div>
+            <?php else : ?>
+                <p class="faq-login-prompt"><a href="<?php echo esc_url(wp_login_url(get_permalink())); ?>">Log in</a> to ask a question.</p>
+            <?php endif; ?>
+        </div>
+
         <!-- Related Recipes -->
         <?php
         $related = new WP_Query([
