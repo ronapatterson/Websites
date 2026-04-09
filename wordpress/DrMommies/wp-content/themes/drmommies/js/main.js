@@ -201,3 +201,122 @@
         reveals.forEach(el => revealObserver.observe(el));
     }
 
+    // ===========================
+    // RECIPE RATING SYSTEM
+    // ===========================
+    var ratingWidget = document.querySelector('.recipe-rating-widget');
+    if (ratingWidget) {
+        var interactiveStars = ratingWidget.querySelectorAll('.rating-interactive .star');
+        var reviewFormInline = document.getElementById('review-form-inline');
+        var btnSubmitRating = document.getElementById('btn-submit-rating');
+        var btnSkipReview = document.getElementById('btn-skip-review');
+        var ratingMessage = ratingWidget.querySelector('.rating-message');
+        var selectedRating = 0;
+
+        // Hover preview
+        interactiveStars.forEach(function(star) {
+            star.addEventListener('mouseenter', function() {
+                var val = parseInt(this.getAttribute('data-value'));
+                interactiveStars.forEach(function(s) {
+                    s.classList.toggle('preview', parseInt(s.getAttribute('data-value')) <= val);
+                });
+            });
+            star.addEventListener('mouseleave', function() {
+                interactiveStars.forEach(function(s) {
+                    s.classList.remove('preview');
+                    s.classList.toggle('selected', parseInt(s.getAttribute('data-value')) <= selectedRating);
+                });
+            });
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.getAttribute('data-value'));
+                interactiveStars.forEach(function(s) {
+                    s.classList.toggle('selected', parseInt(s.getAttribute('data-value')) <= selectedRating);
+                });
+                // Show review form
+                if (reviewFormInline) {
+                    reviewFormInline.style.display = 'block';
+                }
+            });
+        });
+
+        function submitRating(reviewText) {
+            if (!selectedRating) return;
+            var formData = new FormData();
+            formData.append('action', 'rate_recipe');
+            formData.append('recipe_id', ratingWidget.getAttribute('data-recipe-id'));
+            formData.append('rating', selectedRating);
+            formData.append('review_text', reviewText || '');
+            formData.append('nonce', drMommiesData.nonce);
+
+            fetch(drMommiesData.ajaxUrl, { method: 'POST', body: formData })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        // Update average display using safe DOM methods
+                        var avgDisplay = ratingWidget.querySelector('.rating-average');
+                        if (avgDisplay) {
+                            updateStarsDisplay(avgDisplay, data.data.average, data.data.count);
+                        }
+                        // Disable interaction
+                        var interactive = ratingWidget.querySelector('.rating-interactive');
+                        if (interactive) {
+                            interactive.textContent = '';
+                            var label = document.createElement('span');
+                            label.className = 'rating-label';
+                            label.textContent = 'You rated this ' + selectedRating + ' star' + (selectedRating > 1 ? 's' : '');
+                            interactive.appendChild(label);
+                        }
+                        if (reviewFormInline) reviewFormInline.style.display = 'none';
+
+                        var msg = data.data.needsApproval
+                            ? 'Thanks! Your rating is recorded. Your review is pending approval.'
+                            : 'Thanks for rating this recipe!';
+                        showRatingMessage(msg, 'success');
+                    } else {
+                        showRatingMessage(data.data.message || 'Something went wrong.', 'error');
+                    }
+                })
+                .catch(function() {
+                    showRatingMessage('Something went wrong. Please try again.', 'error');
+                });
+        }
+
+        if (btnSubmitRating) {
+            btnSubmitRating.addEventListener('click', function() {
+                var reviewText = document.getElementById('review-text').value.trim();
+                submitRating(reviewText);
+            });
+        }
+
+        if (btnSkipReview) {
+            btnSkipReview.addEventListener('click', function() {
+                submitRating('');
+            });
+        }
+
+        function updateStarsDisplay(container, average, count) {
+            container.textContent = '';
+            var wrapper = document.createElement('span');
+            wrapper.className = 'recipe-stars-display';
+            for (var i = 1; i <= 5; i++) {
+                var starEl = document.createElement('span');
+                starEl.className = 'star ' + (i <= Math.round(average) ? 'filled' : 'empty');
+                starEl.textContent = '\u2605';
+                wrapper.appendChild(starEl);
+            }
+            var countEl = document.createElement('span');
+            countEl.className = 'rating-count';
+            countEl.textContent = ' (' + count + ')';
+            wrapper.appendChild(countEl);
+            container.appendChild(wrapper);
+        }
+
+        function showRatingMessage(text, type) {
+            if (ratingMessage) {
+                ratingMessage.textContent = text;
+                ratingMessage.className = 'rating-message ' + type;
+                ratingMessage.style.display = 'block';
+            }
+        }
+    }
+
