@@ -356,3 +356,82 @@ function drmommies_render_stars_html($average, $count) {
     $html .= ' <span class="rating-count">(' . intval($count) . ')</span></span>';
     return $html;
 }
+
+// AJAX: Rate a recipe (logged-in users only)
+function drmommies_rate_recipe() {
+    check_ajax_referer('drmommies_nonce', 'nonce');
+
+    $recipe_id = absint($_POST['recipe_id'] ?? 0);
+    $rating = intval($_POST['rating'] ?? 0);
+    $review_text = sanitize_textarea_field($_POST['review_text'] ?? '');
+
+    if (!$recipe_id || get_post_type($recipe_id) !== 'recipe' || get_post_status($recipe_id) !== 'publish') {
+        wp_send_json_error(['message' => 'Invalid recipe.']);
+    }
+    if ($rating < 1 || $rating > 5) {
+        wp_send_json_error(['message' => 'Rating must be between 1 and 5.']);
+    }
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'recipe_ratings';
+    $user_id = get_current_user_id();
+
+    $exists = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table WHERE recipe_id = %d AND user_id = %d",
+        $recipe_id, $user_id
+    ));
+    if ($exists) {
+        wp_send_json_error(['message' => 'You have already rated this recipe.']);
+    }
+
+    $has_review = !empty($review_text);
+    $approved = $has_review ? 0 : 1;
+
+    $wpdb->insert($table, [
+        'recipe_id'   => $recipe_id,
+        'user_id'     => $user_id,
+        'rating'      => $rating,
+        'review_text' => $has_review ? $review_text : null,
+        'approved'    => $approved,
+        'created_at'  => current_time('mysql'),
+    ]);
+
+    $stats = drmommies_update_rating_cache($recipe_id);
+
+    wp_send_json_success([
+        'average'       => $stats['average'],
+        'count'         => $stats['count'],
+        'review_count'  => $stats['review_count'],
+        'needsApproval' => $has_review,
+    ]);
+}
+add_action('wp_ajax_rate_recipe', 'drmommies_rate_recipe');
+
+// AJAX: Submit a FAQ question (logged-in users only)
+function drmommies_submit_faq() {
+    check_ajax_referer('drmommies_nonce', 'nonce');
+
+    $recipe_id = absint($_POST['recipe_id'] ?? 0);
+    $question = sanitize_textarea_field($_POST['question'] ?? '');
+
+    if (!$recipe_id || get_post_type($recipe_id) !== 'recipe' || get_post_status($recipe_id) !== 'publish') {
+        wp_send_json_error(['message' => 'Invalid recipe.']);
+    }
+    if (empty($question)) {
+        wp_send_json_error(['message' => 'Please enter a question.']);
+    }
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'recipe_faqs';
+
+    $wpdb->insert($table, [
+        'recipe_id'  => $recipe_id,
+        'user_id'    => get_current_user_id(),
+        'question'   => $question,
+        'approved'   => 0,
+        'created_at' => current_time('mysql'),
+    ]);
+
+    wp_send_json_success(['message' => 'Your question has been submitted and is pending approval.']);
+}
+add_action('wp_ajax_submit_faq', 'drmommies_submit_faq');
