@@ -320,3 +320,77 @@
         }
     }
 
+    // ===========================
+    // FAQ ACCORDION & SUBMISSION
+    // ===========================
+    var faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !expanded);
+            var answer = this.nextElementSibling;
+            if (expanded) {
+                answer.setAttribute('hidden', '');
+            } else {
+                answer.removeAttribute('hidden');
+            }
+        });
+    });
+
+    var btnSubmitFaq = document.getElementById('btn-submit-faq');
+    if (btnSubmitFaq) {
+        btnSubmitFaq.addEventListener('click', function() {
+            var input = document.getElementById('faq-question-input');
+            var question = input ? input.value.trim() : '';
+            var msgEl = document.querySelector('.faq-form-message');
+            var form = document.querySelector('.faq-submit-form');
+
+            if (!question) {
+                if (msgEl) {
+                    msgEl.textContent = 'Please enter a question.';
+                    msgEl.className = 'faq-form-message error';
+                    msgEl.style.display = 'block';
+                }
+                return;
+            }
+
+            btnSubmitFaq.disabled = true;
+            btnSubmitFaq.textContent = 'Submitting...';
+
+            var formData = new FormData();
+            formData.append('action', 'submit_faq');
+            formData.append('recipe_id', form.getAttribute('data-recipe-id'));
+            formData.append('question', question);
+            formData.append('nonce', drMommiesData.nonce);
+
+            fetch(drMommiesData.ajaxUrl, { method: 'POST', body: formData })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        if (msgEl) {
+                            msgEl.textContent = data.data.message;
+                            msgEl.className = 'faq-form-message success';
+                            msgEl.style.display = 'block';
+                        }
+                        input.value = '';
+                    } else {
+                        if (msgEl) {
+                            msgEl.textContent = data.data.message || 'Something went wrong.';
+                            msgEl.className = 'faq-form-message error';
+                            msgEl.style.display = 'block';
+                        }
+                    }
+                })
+                .catch(function() {
+                    if (msgEl) {
+                        msgEl.textContent = 'Something went wrong. Please try again.';
+                        msgEl.className = 'faq-form-message error';
+                        msgEl.style.display = 'block';
+                    }
+                })
+                .finally(function() {
+                    btnSubmitFaq.disabled = false;
+                    btnSubmitFaq.textContent = 'Submit Question';
+                });
+        });
+    }
