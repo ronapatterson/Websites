@@ -1,5 +1,10 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(systemctl status:*)",
+      "Bash(sudo tee:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://drmommies.local)"
+    ],
     "additionalDirectories": [
       "/etc/apache2/sites-available"
     ]

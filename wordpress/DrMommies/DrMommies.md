@@ -48,7 +48,7 @@ sudo service apache2 start
 Then open your browser to:
 
 ```
-http://localhost
+http://drmommies.local
 ```
 
 ### Verify services are running
@@ -73,7 +73,7 @@ sudo service apache2 stop
 
 | Field | Value |
 |-------|-------|
-| Admin URL | http://localhost/wp-admin |
+| Admin URL | http://drmommies.local/wp-admin |
 | Username | `admin` |
 | Password | `DrMommies2024!` |
 | Admin Email | nourishments@doctormommies.com |
@@ -136,14 +136,14 @@ SELECT * FROM wp_newsletter_subscribers;
 
 | URL | Description |
 |-----|-------------|
-| `http://localhost/` | Homepage — hero, about, stats, recipes preview, testimonials, newsletter |
-| `http://localhost/recipes/` | All recipes grid |
-| `http://localhost/recipes/<slug>/` | Individual recipe detail |
-| `http://localhost/blog/` | Blog listing + FAQ |
-| `http://localhost/<post-slug>/` | Individual blog post |
-| `http://localhost/about-us/` | About page |
-| `http://localhost/contact/` | Contact page |
-| `http://localhost/wp-admin/` | WordPress admin dashboard |
+| `http://drmommies.local/` | Homepage — hero, about, stats, recipes preview, testimonials, newsletter |
+| `http://drmommies.local/recipes/` | All recipes grid |
+| `http://drmommies.local/recipes/<slug>/` | Individual recipe detail |
+| `http://drmommies.local/blog/` | Blog listing + FAQ |
+| `http://drmommies.local/<post-slug>/` | Individual blog post |
+| `http://drmommies.local/about-us/` | About page |
+| `http://drmommies.local/contact/` | Contact page |
+| `http://drmommies.local/wp-admin/` | WordPress admin dashboard |
 
 ---
 

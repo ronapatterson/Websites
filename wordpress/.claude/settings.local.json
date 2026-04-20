@@ -29,7 +29,8 @@
       "Bash(curl -s http://localhost:8080/)",
       "Bash(curl -s http://localhost:8080/about/)",
       "Bash(curl -s http://localhost:8080/events/)",
-      "Bash(wp --path=/home/dev/repos/Websites/wordpress/BasileiaLife option get siteurl --allow-root)"
+      "Bash(wp --path=/home/dev/repos/Websites/wordpress/BasileiaLife option get siteurl --allow-root)",
+      "Bash(git submodule:*)"
     ]
   }
 }
