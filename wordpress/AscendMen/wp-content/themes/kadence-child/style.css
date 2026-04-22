@@ -11,11 +11,12 @@
    Brand tokens
    ------------------------------------------------------------ */
 :root {
-  --am-flame-blue:   #29ABE2;
-  --am-navy:         #1B2A4A;
-  --am-dark-nav:     #111d33;
-  --am-steel-blue:   #4A7FC1;
-  --am-white:        #FFFFFF;
+  --am-flame-blue:       #29ABE2;
+  --am-flame-blue-hover: #1f91c3;
+  --am-navy:             #1B2A4A;
+  --am-dark-nav:         #111d33;
+  --am-steel-blue:       #4A7FC1;
+  --am-white:            #FFFFFF;
 
   --am-font-heading: "Oswald", "Arial Narrow", sans-serif;
   --am-font-body:    "Inter", system-ui, -apple-system, sans-serif;
@@ -66,7 +67,7 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
 .am-btn,
 .am-btn--solid,
 .am-btn--outline,
-.wp-block-button__link {
+.wp-block-button__link:not(.is-style-outline) {
   display: inline-block;
   font-family: var(--am-font-heading);
   font-weight: 700;
@@ -81,21 +82,21 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
 }
 
 .am-btn--solid,
-.wp-block-button__link {
+.wp-block-button__link:not(.is-style-outline) {
   background-color: var(--am-flame-blue);
   color: var(--am-white);
 }
 .am-btn--solid:hover,
-.wp-block-button__link:hover {
-  background-color: #1f91c3;
+.wp-block-button__link:not(.is-style-outline):hover {
+  background-color: var(--am-flame-blue-hover);
   color: var(--am-white);
   text-decoration: none;
 }
 
 .am-btn--outline {
   background-color: transparent;
-  color: var(--am-white);
-  border-color: var(--am-white);
+  color: currentColor;
+  border-color: currentColor;
 }
 .am-btn--outline:hover {
   background-color: var(--am-flame-blue);
