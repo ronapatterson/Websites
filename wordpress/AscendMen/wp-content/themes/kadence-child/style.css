@@ -59,3 +59,75 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
   h3 { font-size: 22px; }
   :root { --am-section-pad: 48px; }
 }
+
+/* ------------------------------------------------------------
+   Shared buttons (homepage + Kadence pages)
+   ------------------------------------------------------------ */
+.am-btn,
+.am-btn--solid,
+.am-btn--outline,
+.wp-block-button__link {
+  display: inline-block;
+  font-family: var(--am-font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 28px;
+  border-radius: 2px;
+  border: 2px solid transparent;
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  cursor: pointer;
+}
+
+.am-btn--solid,
+.wp-block-button__link {
+  background-color: var(--am-flame-blue);
+  color: var(--am-white);
+}
+.am-btn--solid:hover,
+.wp-block-button__link:hover {
+  background-color: #1f91c3;
+  color: var(--am-white);
+  text-decoration: none;
+}
+
+.am-btn--outline {
+  background-color: transparent;
+  color: var(--am-white);
+  border-color: var(--am-white);
+}
+.am-btn--outline:hover {
+  background-color: var(--am-flame-blue);
+  border-color: var(--am-flame-blue);
+  color: var(--am-white);
+  text-decoration: none;
+}
+
+/* ------------------------------------------------------------
+   Site-wide section rhythm (picked up by Kadence page layouts)
+   ------------------------------------------------------------ */
+.am-section {
+  padding-top: var(--am-section-pad);
+  padding-bottom: var(--am-section-pad);
+}
+.am-section--navy {
+  background-color: var(--am-navy);
+  color: var(--am-white);
+}
+.am-section--dark {
+  background-color: var(--am-dark-nav);
+  color: var(--am-white);
+}
+.am-section--dark h1,
+.am-section--dark h2,
+.am-section--dark h3,
+.am-section--navy h1,
+.am-section--navy h2,
+.am-section--navy h3 { color: var(--am-white); }
+
+.am-container {
+  max-width: var(--am-container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
