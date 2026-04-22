@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "color": {
+      "palette": [
+        { "slug": "flame-blue", "name": "Flame Blue", "color": "#29ABE2" },
+        { "slug": "mountain-navy", "name": "Mountain Navy", "color": "#1B2A4A" },
+        { "slug": "dark-nav", "name": "Dark Nav", "color": "#111d33" },
+        { "slug": "steel-blue", "name": "Steel Blue", "color": "#4A7FC1" },
+        { "slug": "summit-white", "name": "Summit White", "color": "#FFFFFF" }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        { "slug": "oswald", "name": "Oswald", "fontFamily": "\"Oswald\", \"Arial Narrow\", sans-serif" },
+        { "slug": "inter",  "name": "Inter",  "fontFamily": "\"Inter\", system-ui, sans-serif" }
+      ]
+    }
+  },
+  "styles": {
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--inter)"
+    },
+    "elements": {
+      "h1": { "typography": { "fontFamily": "var(--wp--preset--font-family--oswald)", "fontWeight": "700" } },
+      "h2": { "typography": { "fontFamily": "var(--wp--preset--font-family--oswald)", "fontWeight": "700" } },
+      "h3": { "typography": { "fontFamily": "var(--wp--preset--font-family--oswald)", "fontWeight": "700" } },
+      "h4": { "typography": { "fontFamily": "var(--wp--preset--font-family--oswald)", "fontWeight": "500" } }
+    }
+  }
+}
