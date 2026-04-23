@@ -21,4 +21,26 @@ $img = get_stylesheet_directory_uri() . '/assets/images';
   </div>
 </section>
 
+<section id="greatness" class="am-mission am-section am-section--navy">
+  <div class="am-container">
+    <p class="am-mission__copy">
+      At Ascend Men, we inspire and empower men to embrace their God-given gifts,
+      unlocking their true potential and purpose in life.
+    </p>
+  </div>
+</section>
+
+<section class="am-stats am-section am-section--dark">
+  <div class="am-container am-stats__grid">
+    <div class="am-stats__item">
+      <div class="am-stats__number">150+</div>
+      <div class="am-stats__label">Members</div>
+    </div>
+    <div class="am-stats__item">
+      <div class="am-stats__number">15</div>
+      <div class="am-stats__label">Programs</div>
+    </div>
+  </div>
+</section>
+
 <?php get_footer(); ?>
