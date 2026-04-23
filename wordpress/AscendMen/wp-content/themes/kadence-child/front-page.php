@@ -43,4 +43,31 @@ $img = get_stylesheet_directory_uri() . '/assets/images';
   </div>
 </section>
 
+<section id="purpose" class="am-pillars am-section">
+  <div class="am-container">
+    <h2 class="am-pillars__heading">Lead with Purpose</h2>
+    <div class="am-pillars__grid">
+
+      <article class="am-pillar">
+        <img class="am-pillar__image" src="<?php echo esc_url( $img . '/pillar-coaching.jpg' ); ?>" alt="One-on-one coaching conversation" />
+        <h3 class="am-pillar__title">Purposeful Life Coaching</h3>
+        <p class="am-pillar__body">Developing confidence through identifying unique abilities.</p>
+      </article>
+
+      <article class="am-pillar">
+        <img class="am-pillar__image" src="<?php echo esc_url( $img . '/pillar-community.jpg' ); ?>" alt="Men gathered in community" />
+        <h3 class="am-pillar__title">Community Support Network</h3>
+        <p class="am-pillar__body">Peer accountability and shared purpose.</p>
+      </article>
+
+      <article class="am-pillar">
+        <img class="am-pillar__image" src="<?php echo esc_url( $img . '/pillar-leadership.jpg' ); ?>" alt="Men engaged in leadership activity" />
+        <h3 class="am-pillar__title">Leadership Development &amp; Community Initiatives</h3>
+        <p class="am-pillar__body">Programs fostering growth and shared experiences.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
 <?php get_footer(); ?>

@@ -383,3 +383,37 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
   .am-stats__number { font-size: 64px; }
   .am-mission__copy { font-size: 19px; }
 }
+
+/* ------------------------------------------------------------
+   Homepage — Three Pillars
+   ------------------------------------------------------------ */
+.am-pillars { background-color: var(--am-white); color: var(--am-navy); }
+.am-pillars__heading {
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 48px;
+  text-transform: uppercase;
+}
+.am-pillars__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.am-pillar { text-align: center; }
+.am-pillar__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 18px;
+}
+.am-pillar__title {
+  font-size: 22px;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+.am-pillar__body { margin: 0; color: #3a4a66; }
+
+@media (max-width: 900px) {
+  .am-pillars__grid { grid-template-columns: 1fr; gap: 40px; }
+}
