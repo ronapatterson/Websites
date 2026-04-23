@@ -45,4 +45,5 @@ test('pause()/play() toggle state', () => {
   assert.equal(c.isPlaying(), false);
   c.play();
   assert.equal(c.isPlaying(), true);
+  c.destroy();
 });

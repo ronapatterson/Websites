@@ -29,10 +29,15 @@
       autoplay = true;
       if (timer) clearInterval(timer);
       timer = setInterval(advance, intervalMs);
+      // Don't keep Node's event loop alive for test runners; no-op in browsers.
+      if (timer && typeof timer.unref === 'function') timer.unref();
     }
     function pause() {
       autoplay = false;
       if (timer) { clearInterval(timer); timer = null; }
+    }
+    function destroy() {
+      pause();
     }
 
     if (autoplay && typeof setInterval !== 'undefined' && intervalMs > 0) {
@@ -45,6 +50,7 @@
       goTo: goTo,
       play: play,
       pause: pause,
+      destroy: destroy,
       index: function () { return i; },
       isPlaying: function () { return autoplay; }
     };
