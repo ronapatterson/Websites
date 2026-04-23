@@ -26,10 +26,10 @@ $has_logo  = file_exists( $logo_path );
       <?php endif; ?>
       <p class="am-footer__tagline">Inspiring men to embrace their true potential.</p>
       <ul class="am-footer__social" aria-label="Social">
-        <li><a href="#" aria-label="Facebook">FB</a></li>
-        <li><a href="#" aria-label="Instagram">IG</a></li>
-        <li><a href="#" aria-label="TikTok">TT</a></li>
-        <li><a href="#" aria-label="X">X</a></li>
+        <li><a href="#" aria-label="Facebook"><span aria-hidden="true">FB</span></a></li>
+        <li><a href="#" aria-label="Instagram"><span aria-hidden="true">IG</span></a></li>
+        <li><a href="#" aria-label="TikTok"><span aria-hidden="true">TT</span></a></li>
+        <li><a href="#" aria-label="X"><span aria-hidden="true">X</span></a></li>
       </ul>
     </div>
 
@@ -59,10 +59,10 @@ $has_logo  = file_exists( $logo_path );
 
     <div class="am-footer__col">
       <h4>Stay Connected</h4>
-      <form class="am-footer__subscribe" onsubmit="return false;" aria-label="Subscribe to updates">
+      <form class="am-footer__subscribe" aria-label="Subscribe to updates (coming soon)">
         <label class="screen-reader-text" for="am-subscribe-email">Email</label>
-        <input id="am-subscribe-email" type="email" placeholder="you@example.com" autocomplete="off" />
-        <button type="submit" class="am-btn am-btn--solid">Subscribe</button>
+        <input id="am-subscribe-email" type="email" placeholder="you@example.com" autocomplete="off" disabled aria-disabled="true" />
+        <button type="submit" class="am-btn am-btn--solid" disabled aria-disabled="true" title="Coming soon">Subscribe</button>
       </form>
       <p>contact@ascendmen.org</p>
       <p>123-456-7890</p>
@@ -72,7 +72,7 @@ $has_logo  = file_exists( $logo_path );
 
   <div class="am-footer__bottom">
     <div class="am-container">
-      <p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> Ascend Men. All rights reserved.</p>
+      <p>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> Ascend Men. All rights reserved.</p>
     </div>
   </div>
 </footer>

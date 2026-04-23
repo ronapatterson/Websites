@@ -263,7 +263,7 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
 .am-footer__logo { max-width: 140px; height: auto; margin-bottom: 12px; display: block; }
 .am-footer__tagline { margin: 0 0 16px; opacity: 0.9; }
 
-.am-footer__social { flex-direction: row !important; gap: 14px !important; }
+.am-footer__col ul.am-footer__social { flex-direction: row; gap: 14px; }
 .am-footer__social a {
   display: inline-flex;
   width: 36px; height: 36px;
