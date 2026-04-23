@@ -5,13 +5,23 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/*
+ * Intentional trade-off: this override drops the Kadence parent's
+ * action hooks (`kadence_before_wrapper`, `kadence_before_header`,
+ * `kadence_header`, `kadence_after_header`, `kadence_before_content`)
+ * because we are rebuilding the header from scratch to match the
+ * mockup. If a Kadence add-on plugin is later installed that relies
+ * on injecting markup via one of those hooks (announcement bars,
+ * sticky-header JS, etc.), those features will be silently skipped.
+ * Re-evaluate when adding Kadence-family plugins.
+ */
+
 $logo_path = ABSPATH . 'ASCEND MEN PNG TRANSPARENT.png';
 $has_logo  = file_exists( $logo_path );
 
-$is_logged_in = is_user_logged_in();
-if ( $is_logged_in ) {
+if ( is_user_logged_in() ) {
     $user      = wp_get_current_user();
-    $cta_label = esc_html( $user->first_name ?: $user->display_name );
+    $cta_label = $user->first_name ?: $user->display_name;
     $cta_href  = home_url( '/account/' );
 } else {
     $cta_label = 'JOIN / LOGIN';
@@ -23,6 +33,7 @@ if ( $is_logged_in ) {
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');</script>
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -54,7 +65,7 @@ if ( $is_logged_in ) {
     </nav>
 
     <a class="am-btn am-btn--solid am-header__cta" href="<?php echo esc_url( $cta_href ); ?>">
-      <?php echo $cta_label; ?>
+      <?php echo esc_html( $cta_label ); ?>
     </a>
   </div>
 </header>

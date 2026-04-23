@@ -134,6 +134,28 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
 }
 
 /* ------------------------------------------------------------
+   Skip link (child-theme-owned focus style)
+   ------------------------------------------------------------ */
+.skip-link.screen-reader-text:focus,
+.skip-link:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  clip: auto;
+  clip-path: none;
+  background: var(--am-flame-blue);
+  color: var(--am-white);
+  padding: 10px 16px;
+  font-family: var(--am-font-body);
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 200;
+  border-radius: 2px;
+}
+
+/* ------------------------------------------------------------
    Header
    ------------------------------------------------------------ */
 .am-header {
@@ -204,7 +226,4 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
   .am-header__nav[data-open="true"] { display: block; }
   .am-header__nav ul { flex-direction: column; gap: 14px; }
   .am-header__cta { display: none; }
-  .am-header__nav[data-open="true"]::after {
-    content: "";
-  }
 }
