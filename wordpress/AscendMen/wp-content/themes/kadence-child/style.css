@@ -132,3 +132,79 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
   margin: 0 auto;
   padding: 0 24px;
 }
+
+/* ------------------------------------------------------------
+   Header
+   ------------------------------------------------------------ */
+.am-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--am-navy);
+  color: var(--am-white);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+}
+.am-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 72px;
+}
+.am-header__brand { display: inline-flex; align-items: center; color: var(--am-white); }
+.am-header__brand img { height: 42px; width: auto; display: block; }
+.am-header__brand span { font-family: var(--am-font-heading); font-weight: 700; font-size: 22px; letter-spacing: 0.05em; }
+
+.am-header__nav { margin-left: auto; }
+.am-header__nav ul {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; gap: 28px;
+}
+.am-header__nav a {
+  color: var(--am-white);
+  text-decoration: none;
+  font-family: var(--am-font-heading);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+.am-header__nav a:hover { color: var(--am-flame-blue); }
+
+.am-header__cta { padding: 10px 22px; font-size: 13px; }
+
+.am-header__toggle {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  border: 0;
+  width: 40px; height: 40px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 8px 6px;
+}
+.am-header__toggle span {
+  display: block;
+  height: 2px;
+  background: var(--am-white);
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .am-header__toggle { display: flex; }
+  .am-header__nav {
+    position: absolute;
+    top: 72px; left: 0; right: 0;
+    background: var(--am-navy);
+    display: none;
+    padding: 16px 24px;
+    margin-left: 0;
+  }
+  .am-header__nav[data-open="true"] { display: block; }
+  .am-header__nav ul { flex-direction: column; gap: 14px; }
+  .am-header__cta { display: none; }
+  .am-header__nav[data-open="true"]::after {
+    content: "";
+  }
+}
