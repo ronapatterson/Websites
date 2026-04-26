@@ -417,3 +417,60 @@ a:hover { color: var(--am-flame-blue); text-decoration: underline; }
 @media (max-width: 900px) {
   .am-pillars__grid { grid-template-columns: 1fr; gap: 40px; }
 }
+
+/* ------------------------------------------------------------
+   Homepage — Testimonial carousel
+   ------------------------------------------------------------ */
+.am-testimonials { text-align: center; }
+.am-testimonials__stars {
+  display: inline-flex; gap: 4px; margin-bottom: 24px;
+}
+
+.am-carousel {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+.am-carousel__track { position: relative; min-height: 160px; }
+.am-carousel__slide {
+  position: absolute; inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+  font-family: var(--am-font-body);
+  font-size: 22px;
+  line-height: 1.5;
+}
+.am-carousel__slide.is-active { opacity: 1; pointer-events: auto; position: relative; }
+.am-carousel__slide p { margin: 0 0 12px; }
+.am-carousel__slide cite { font-style: normal; color: var(--am-flame-blue); font-weight: 700; }
+
+.am-carousel__prev, .am-carousel__next {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: var(--am-white);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+}
+.am-carousel__prev { left: 0; }
+.am-carousel__next { right: 0; }
+.am-carousel__prev:hover, .am-carousel__next:hover { border-color: var(--am-flame-blue); color: var(--am-flame-blue); }
+
+.am-carousel__dots {
+  display: flex; justify-content: center; gap: 8px;
+  margin-top: 24px;
+}
+.am-carousel__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+.am-carousel__dot[aria-current="true"] { background: var(--am-flame-blue); }

@@ -8,7 +8,7 @@ add_action( 'wp_enqueue_scripts', function() {
         'kadence-child-style',
         get_stylesheet_directory_uri() . '/style.css',
         [ 'kadence-parent-style' ],
-        '1.1.0'
+        '1.2.0'
     );
     wp_enqueue_style(
         'am-google-fonts',
@@ -16,6 +16,25 @@ add_action( 'wp_enqueue_scripts', function() {
         [],
         null
     );
+
+    if ( is_front_page() ) {
+        wp_enqueue_script(
+            'am-testimonial-carousel',
+            get_stylesheet_directory_uri() . '/assets/js/testimonial-carousel.js',
+            [],
+            '1.0.0',
+            true
+        );
+        wp_add_inline_script(
+            'am-testimonial-carousel',
+            "document.addEventListener('DOMContentLoaded', function(){
+                var root = document.querySelector('.am-carousel');
+                if (root && window.AMTestimonialCarousel) {
+                    window.AMTestimonialCarousel.initFromDOM(root);
+                }
+            });"
+        );
+    }
 });
 
 require_once get_stylesheet_directory() . '/includes/programs-cpt.php';
